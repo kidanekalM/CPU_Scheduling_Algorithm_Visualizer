@@ -17,7 +17,7 @@
             </nav>
         </header>
         <main>
-            <table>
+            <table cellspacing="0" cellwidth="100">
                 <tr>
                     <th>
                         Name    
@@ -28,47 +28,77 @@
                     <th>
                         Burst Time    
                     </th>
+                    <th>
+                        Color    
+                    </th>
+                    <th>
+                        Control
+                    </th>
                 </tr>
                 <tr>
                     <td>
-                        P1
+                        <input type="text" class="processName" id="processName">
                     </td>
                     <td>
-                        213
+                        <input min="0" type="number" class="arrivalTime" id="arrivalTime">
                     </td>
                     <td>
-                        123
-                    </td>
-                </tr>
-                <tr>
-                    <td>
-                        P2
+                        <input min="0" type="number" id="burstTime">
                     </td>
                     <td>
-                        213
+                        <select name="" id="color">
+                            <option value="aliceblue" style="background-color: aliceblue;">aliceblue</option>
+                            <option value="yellowgreen" style="background-color: yellowgreen;">yellowgreen</option>
+                            <option value="grey" style="background-color: grey;">grey</option>
+                            <option value="limegreen" style="background-color: limegreen;">limegreen</option>
+                            <option value="plum" style="background-color: plum;">plum</option>
+                            <option value="sandybrown" style="background-color: sandybrown;">sandybrown</option>
+                            <option value="tan" style="background-color: tan;">tan</option>
+                            <option value="sandybrown" style="background-color: sandybrown;">sandybrown</option>
+                            <option value="plum" style="background-color: plum;">plum</option>
+                            <option value="limegreen" style="background-color: limegreen;">limegreen</option>
+                            <option value="grey" style="background-color: grey;">grey</option>
+                            <option value="yellowgreen" style="background-color: yellowgreen;">yellowgreen</option>
+                        </select>
                     </td>
-                    <td>
-                        123
-                    </td>
-                </tr>
-                <tr>
-                    <td>
-                        P3
-                    </td>
-                    <td>
-                        213
-                    </td>
-                    <td>
-                        123
-                    </td>
+                    <th>
+                        <button class="add" id="btnadd">Add</button>
+                    </th>
                 </tr>
             </table>
 
-            <div class="readyQueue"></div>
-            <div class="ganttChart"></div>
+            <label for="Quantum Value">Quantum Value </label> <input min="1" max="100" type="number" id="Quantum Value" value="">
+            <button id="btnVisualize">Visualize</button>
+            <div class="chartContainer">
+                <div class="readyQueue" id="readyQueue">
+                    <div class="past time"></div>
+                    <div class="past time"></div>
+                    <div class="past time"></div>
+                    <div class="past time"></div>
+                    <div class="past time"></div>
+                    <div class="ready time"></div>
+                    <div class="ready time"></div>
+                    <div class="ready time"></div>
+                    <div class="ready time"></div>
+                    <div class="ready time"></div>
+                    <div class="ready time"></div>
+                </div>
+                <div class="ganttChart">
+                    <div class="time"></div>
+                    <div class="time"></div>
+                    <div class="time"></div>
+                    <div class="time"></div>
+                    <div class="time"></div>
+                    <div class="time"></div>
+                    <div class="time"></div>
+                    <div class="time"></div>
+                    <div class="time"></div>
+                </div>
+            </div>
 
 
         </main>
     </div>
 </body>
 </html>
+<script src="index.js"></script>
