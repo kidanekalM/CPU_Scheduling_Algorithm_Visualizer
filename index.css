@@ -48,6 +48,12 @@ table tr{
 
 table td{
     font-size: 1.5rem;
+    padding: 0 1.2rem;
+}
+ input{
+    font-size: 1.2rem;
+    width: 6rem;
+    box-shadow: 0px 0px 1px 1px grey;
 }
 tr:nth-child(even){
     background-color: rgb(177, 177, 177);
@@ -57,10 +63,14 @@ div.chartContainer{
     overflow-y: hidden;
     display: flex;
     flex-direction: column;
+    padding: 0 2rem;
     gap: 1vh;
+    height: 25vh;
+    max-width: 80vw ;
 }
 div.readyQueue{
     display: flex;
+    margin-top: 1rem;
 }
 div.ready{
 
@@ -69,12 +79,18 @@ div.past{
     background-color: grey;
 }
 div.time{
-    height: 5vh;
-    width: 5vh;
+    height: 6vh;
+    min-width: 6vh;
+    padding: 1vh;
+    width: max-content;
     border: 1px solid black;
     animation-name: grow;
     animation-duration: 1s;
     animation-iteration-count: 1;
+}
+.idle{
+    background-color: rgb(22, 22, 22);
+    color: white;
 }
 @keyframes grow {
     from{width: 0;}
@@ -91,4 +107,21 @@ button{
     border: 1px solid blue;
     background-color: white;
     box-shadow: 0px 1px 1px 1px gray;
+}
+h6.checkPoint{
+    font-size: 1.5rem;
+    position: relative;
+    top: 5vh;
+    left: -2vh;
+    z-index: 1;
+}
+
+@keyframes grow {
+    from{
+        width: 0;
+        border-radius: 0 4vh 4vh 0;
+    }
+    to{  
+        border-radius: 0 4vh 4vh 0;
+      }
 }

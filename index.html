@@ -17,7 +17,7 @@
             </nav>
         </header>
         <main>
-            <table cellspacing="0" cellwidth="100">
+            <table cellspacing="0" cellwidth="100" id="table">
                 <tr>
                     <th>
                         Name    
@@ -29,7 +29,7 @@
                         Burst Time    
                     </th>
                     <th>
-                        Color    
+                        Color Code  
                     </th>
                     <th>
                         Control
@@ -47,18 +47,26 @@
                     </td>
                     <td>
                         <select name="" id="color">
-                            <option value="aliceblue" style="background-color: aliceblue;">aliceblue</option>
-                            <option value="yellowgreen" style="background-color: yellowgreen;">yellowgreen</option>
-                            <option value="grey" style="background-color: grey;">grey</option>
-                            <option value="limegreen" style="background-color: limegreen;">limegreen</option>
-                            <option value="plum" style="background-color: plum;">plum</option>
-                            <option value="sandybrown" style="background-color: sandybrown;">sandybrown</option>
-                            <option value="tan" style="background-color: tan;">tan</option>
-                            <option value="sandybrown" style="background-color: sandybrown;">sandybrown</option>
-                            <option value="plum" style="background-color: plum;">plum</option>
-                            <option value="limegreen" style="background-color: limegreen;">limegreen</option>
-                            <option value="grey" style="background-color: grey;">grey</option>
-                            <option value="yellowgreen" style="background-color: yellowgreen;">yellowgreen</option>
+                            <option disabled value="select">-select-</option>
+                            <option value="aliceblue" style="background-color:aliceblue;">aliceblue</option>
+                            <option value="aqua" style="background-color:aqua;">aqua</option>
+                            <option value="burlywood" style="background-color:burlywood;">burlywood</option>
+                            <option value="chocolate" style="background-color:chocolate;">chocolate</option>
+                            <option value="brown" style="background-color:brown;">brown</option>
+                            <option value="chartreuse" style="background-color:chartreuse;">chartreuse</option>
+                            <option value="cornflowerblue" style="background-color:cornflowerblue;">cornflowerblue</option>
+                            <option value="crimson" style="background-color:crimson;">crimson</option>
+                            <option value="darkgreen" style="background-color:darkgreen;">darkgreen</option>
+                            <option value="darkolivegreen" style="background-color:darkolivegreen;">darkolivegreen</option>
+                            <option value="darkslategray" style="background-color:darkslategray;">darkslategray</option>
+                            <option value="goldenrod" style="background-color:goldenrod;">goldenrod</option>
+                            <option value="lightblue" style="background-color:lightblue;">lightblue</option>
+                            <option value="lightcoral" style="background-color:lightcoral;">lightcoral</option>
+                            <option value="lightgreen" style="background-color:lightgreen;">lightgreen</option>
+                            <option value="sandybrown" style="background-color:sandybrown;">sandybrown</option>
+                            <option value="silver" style="background-color:silver;">silver</option>
+                            <option value="teal" style="background-color:teal;">teal</option>
+                            <option value="turquoise" style="background-color:turquoise;">turquoise</option>
                         </select>
                     </td>
                     <th>
@@ -67,7 +75,7 @@
                 </tr>
             </table>
 
-            <label for="Quantum Value">Quantum Value </label> <input min="1" max="100" type="number" id="Quantum Value" value="">
+            <label for="Quantum Value" id="txtQuantum">Quantum Value </label> <input min="1" max="100" type="number" id="Quantum Value" value="">
             <button id="btnVisualize">Visualize</button>
             <div class="chartContainer">
                 <div class="readyQueue" id="readyQueue">
@@ -84,15 +92,7 @@
                     <div class="ready time"></div>
                 </div>
                 <div class="ganttChart">
-                    <div class="time"></div>
-                    <div class="time"></div>
-                    <div class="time"></div>
-                    <div class="time"></div>
-                    <div class="time"></div>
-                    <div class="time"></div>
-                    <div class="time"></div>
-                    <div class="time"></div>
-                    <div class="time"></div>
+                    <div class="time"><h6 class="checkPoint">0</h6></div>
                 </div>
             </div>
 
