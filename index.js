@@ -9,8 +9,9 @@ btnAdd.addEventListener('click',function (params) {
     procName = document.getElementById('processName');
     arrivalTime = document.getElementById('arrivalTime');
     burstTime = document.getElementById('burstTime');
+    priority = document.getElementById('priorityNum');
     color = document.getElementById('color');
-    valid = [false,false,false,false];
+    valid = [false,false,false,false,false];
 
     Processes.map(p=>console.log(toString(p.procName)+" "+toString(procName.value)))
     console.log(Processes.every(p=>p.procName == procName));
@@ -51,13 +52,21 @@ btnAdd.addEventListener('click',function (params) {
     else{
         valid[3] = true;
     }
+    if((parseInt(priority.value) < 0) || (parseInt(priority.value)>100)){
+        valid[4] = false;
+        alert('priority number should be between 0 and 100');
+    }
+    else{
+        valid[4] = true
+    }
 
     if(valid.every(val=> val==true)){
         process = Object();
         process.procName = procName.value;
-        process.arrivalTime= arrivalTime.value;
-        process.burstTime=burstTime.value;
+        process.arrivalTime = parseInt(arrivalTime.value);
+        process.burstTime = parseInt(burstTime.value);
         process.color = color[color.selectedIndex].value;
+        process.priority = parseInt(priority.value);
         console.log(color[color.selectedIndex])
         color[color.selectedIndex].disabled=true;
         Processes.push(process);
@@ -65,21 +74,27 @@ btnAdd.addEventListener('click',function (params) {
         alert(process.procName+" Added");
         console.log(Processes);
         color.selectedIndex=0;
-        initialize()   
+        // initialize()   
     } 
 })
+
+// TODO EDit and DELelrte
+
+//
 document.getElementById('btnVisualize').addEventListener('click',function () {
+    
     quantum = document.getElementById('txtQuantum').value;
     if(parseInt(quantum)>=0){
         alert('quantum number cannot be less or equal to zero')
     }
     else{
         visualize();
+        initialize();
     }
   })
 function addToTable(process) {
     tableRow = document.createElement('tr');
-    tableRow.innerHTML='<td>'+process.procName+'</td>'+'<td>'+process.arrivalTime+'</td>'+'<td>'+process.burstTime+'</td>'+'<td style="background-color:'+process.color+'">'+process.color+'</td>'+'<td></td>';
+    tableRow.innerHTML='<td>'+process.procName+'</td>'+'<td>'+process.arrivalTime+'</td>'+'<td>'+process.burstTime+'</td>'+'<td>'+process.priority+'</td>'+'<td style="background-color:'+process.color+'">'+process.color+'</td>'+'<td><button id="edit">Edit</button><button id="delete">Delete</button></td>';
     console.log("last child is");
     document.getElementById('table').lastElementChild.lastElementChild.before(tableRow);
 
@@ -106,7 +121,7 @@ function initialize() {
             }        
         }
     }
-    queue = queue.sort((a,b)=>{b.arrivalTime-a.arrivalTime});
+    // queue = queue.sort((a,b)=>{b.arrivalTime-a.arrivalTime});
     
     DOMqueue = document.getElementById('readyQueue')
     console.log("CHildrem");

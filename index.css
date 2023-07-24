@@ -115,6 +115,11 @@ h6.checkPoint{
     left: -2vh;
     z-index: 1;
 }
+button#edit,button#delete{
+    font-size: 1rem;
+    margin: 0 2px;
+    display: none;
+}
 
 @keyframes grow {
     from{
