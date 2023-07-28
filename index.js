@@ -1,8 +1,45 @@
+/*******************************
+ * Make it run parallely
+ */
+
+
 btnAdd = document.getElementById('btnadd');
 let Processes = [];
 let queue = [];
 let quantum = 0;
 let currentTime = 0;
+let visualizerRunning = new Object()
+visualizerRunning = false;
+let ActiveProcesses = 0;
+/*
+let FCFS = new Object()
+FCFS.currentTime = 0;
+FCFS.queue = [];
+let SJFNPremptive = new Object()
+SJFNPremptive.currentTime=0;
+SJFNPremptive.queue=[];
+let SJFPremptive = new Object()
+SJFPremptive.currentTime=0;
+SJFPremptive.queue=[]
+let RoundRobin = new Object()
+RoundRobin.currentTime=0;
+RoundRobin.queue=[]
+let PriorityPremptive = new Object()
+PriorityPremptive.avgWT = 0;
+PriorityPremptive.avgTRT = 0;
+PriorityPremptive.avgCT = 0;
+PriorityPremptive.avgRT = 0;
+PriorityPremptive.currentTime=0;
+PriorityPremptive.queue=[];
+let PriorityNPremptive = new Object()
+PriorityNPremptive.avgWT = 0;
+PriorityNPremptive.avgTRT = 0;
+PriorityNPremptive.avgCT = 0;
+PriorityNPremptive.avgRT = 0;
+PriorityNPremptive.currentTime=0;
+PriorityNPremptive.queue=[];
+*/
+
 console.log( document.getElementById('color'));
 btnAdd.addEventListener('click',function (params) {
     
@@ -29,7 +66,7 @@ btnAdd.addEventListener('click',function (params) {
     else{
         valid[0] =true;
     }
-    if((parseInt(arrivalTime.value)< 0) || (parseInt(arrivalTime.value)> 100) ){
+    if((parseInt(arrivalTime.value) < 0) || (parseInt(arrivalTime.value)> 100) ){
         alert('Arrival Time Should be between 0 and 100')
         arrivalTime.value = "";
         valid[1] = false;
@@ -67,6 +104,9 @@ btnAdd.addEventListener('click',function (params) {
         process.burstTime = parseInt(burstTime.value);
         process.color = color[color.selectedIndex].value;
         process.priority = parseInt(priority.value);
+        process.responseTime = 0;
+        process.completionTIme = 0;
+        process.remainingTime = process.burstTime;
         console.log(color[color.selectedIndex])
         color[color.selectedIndex].disabled=true;
         Processes.push(process);
@@ -74,22 +114,48 @@ btnAdd.addEventListener('click',function (params) {
         alert(process.procName+" Added");
         console.log(Processes);
         color.selectedIndex=0;
+        ActiveProcesses++;
+        console.log("active == " +ActiveProcesses);
         // initialize()   
     } 
 })
 
-// TODO EDit and DELelrte
+// TODO EDit and Delete
 
-//
-document.getElementById('btnVisualize').addEventListener('click',function () {
-    
+document.getElementById('btnVisualize').addEventListener('click', function () {
+    console.log(document.getElementById('txtQuantum'));
     quantum = document.getElementById('txtQuantum').value;
-    if(parseInt(quantum)>=0){
+    console.log((quantum));
+    algo = document.getElementById('selectAlgo')[document.getElementById('selectAlgo').selectedIndex].value
+    if((quantum == "") || (parseInt(quantum)<=0)){
         alert('quantum number cannot be less or equal to zero')
     }
     else{
-        visualize();
-        initialize();
+        quantum = parseInt(quantum);
+            // initialize();
+        if(algo == "select"){
+            alert('choose an algorithm!');
+        }
+        else if(algo == "RR"){
+             initialize(visualizeRoundRobin);
+            //  visualizeRoundRobin();
+        }
+        else if(algo == "FCFS"){
+            initialize(visualizeFCFS);
+        }
+        else if(algo == "SJFNP"){
+            initialize(visualizeSJFNP);
+        }
+        else if(algo == "SJFP"){
+            initialize(visualizeSJFP);
+        } 
+        else if(algo == "PP"){
+            initialize(visualizePP);
+        }
+        else if(algo == "PNP"){
+            initialize(visualizePNP);
+        }
+        
     }
   })
 function addToTable(process) {
@@ -99,110 +165,187 @@ function addToTable(process) {
     document.getElementById('table').lastElementChild.lastElementChild.before(tableRow);
 
 }
-// document.getElementsByClassName('ready time')[0].className='past time';
-function initialize() {
+ async function initialize(algorithm) {
     queue=[];
-    for(i=0;i<Processes.length;i++){
-        process = Object();
-        
-        process.procName = Processes[i].procName;
-        process.arrivalTime = Processes[i].arrivalTime;
-        process.burstTime = Processes[i].burstTime;
-        process.color = Processes[i].color;
-        queue.push(process);
-    }
-
-    for(j=0;j<queue.length;j++){
-        for(i=j;i<queue.length;i++){
-            if(queue[j].arrivalTime>queue[i].arrivalTime){
-                temp = queue[i];
-                queue[i]=queue[j];
-                queue[j]=temp;
+    for(j=0;j<Processes.length;j++){
+        for(i=j;i<Processes.length;i++){
+            if(Processes[j].arrivalTime>Processes[i].arrivalTime){
+                temp = Processes[i];
+                Processes[i]=Processes[j];
+                Processes[j]=temp;
             }        
         }
     }
-    // queue = queue.sort((a,b)=>{b.arrivalTime-a.arrivalTime});
-    
+
     DOMqueue = document.getElementById('readyQueue')
-    console.log("CHildrem");
+    console.log("Children");
     console.log(DOMqueue.children);
     DOMqueue.innerHTML="";
-    for(i=0;i<queue.length;i++){
-        addToQueue(queue[i]);
-    }
-    console.log(queue);
-    console.log(Processes);
+    
+    for(i=0;i<Processes.length;i++){
+        let process = new Object();
+        Object.assign(process,Processes[i]);
+        console.log(process);
+        
+        setTimeout(function () { 
+             enqueue(process);
+            console.log(Processes);
+            console.log(queue);
+            console.log(queue.length);
+            time(algorithm)
+            // algorithm();
+            // console.log(visualizerRunning);
+            },Processes[0].arrivalTime*1000,process,algorithm,visualizerRunning,i);
+            
+        }
+    
+
 }
-// function addToGantt(process){
-    
-//     document.getElementsByClassName('ready time')[0].className='past time';
-    
-//     div = document.createElement('div');
-//     div.className = 'time'
-//     div.style.backgroundColor = 'blue';
-//     div.style.width = quantum+"vw";
-//     document.getElementById('readyQueue').appendChild(div);
-// }
-function addToQueue(process) {
+
+async function enqueue(process) {
+    // checkProcesses();
     DOMqueue = document.getElementById('readyQueue');
     queueItem = document.createElement('div');
     queueItem.className = 'ready time';
+    queueItem.id = process.procName;
     queueItem.style.backgroundColor = process.color;
-    queueItem.innerHTML = '<strong>'+/*process.procName+*/'<sub> RT = '+process.burstTime+'</sub>'+'</strong>';
+    queueItem.innerHTML = '<strong>'+/*process.procName+*/'<sub> RT = '+process.remainingTime+'</sub>'+'</strong>';
     DOMqueue.appendChild(queueItem);
     queue.push(process);
+    
+    return;
+
 }
-function removeFromQueue() {
-    document.querySelector('.ready.time').className="past time";
+function dequeue() {
+    // checkProcesses();
+    console.log("dequeue");
+    console.log(queue);
+    let domItem =document.querySelector('.ready.time'); 
+    console.log(domItem);
+    domItem.className="past time";
+    // domItem.style.backgroundColor="grey";
+    
     return queue.shift();
 }
 function wait(duration) {
     setTimeout(function() {
             
-    },idleDuration*1000);
+    },duration*1000);
 }
-function addToGantt(process) {
-    if(currentTime<process.arrivalTime){
-        idle = document.createElement('div');
-        idle.innerHTML='<h6 class="checkPoint">'+currentTime+'</h6>';
-        idle.className='time idle';
-        idleDuration = process.arrivalTime-currentTime;
-        idle.style.animationName="grow"
-        idle.style.animationDuration=duration+"s"
-        idle.style.width=(6*idleDuration)+"vh";
-        document.getElementById('ganttChart').appendChild(idle);
-        currentTime += idleDuration;
-        wait(idleDuration)
-    }
-    duration = process.burstTime>quantum?process.burstTime-quantum:process.arrivalTime;
-    job = document.createElement('div')
+function idle(duration) {
+    let idleJob = document.createElement('div');
+    idleJob.innerHTML='<h6 class="checkPoint">'+currentTime+'</h6>';
+    idleJob.className='time idle';
+    idleJob.style.animationName="grow"
+    idleJob.style.animationDuration=duration+"s"
+    // idleJob.style.animationDelay = currentTime+"s"
+    idleJob.style.width=(6*duration)+"vw";
+    document.getElementById('ganttChart').appendChild(idleJob);
+    // setTimeout(function () { document.getElementById('ganttChart').appendChild(idleJob); },duration*1000)
+    
+    currentTime += duration;
+    // wait(duration)
+    
+}
+/***
+ * Will add the process to gantt chart and subtract the duration from the remaining time 
+ */
+
+function addToGantt(process,duration) {
+    // duration = process.burstTime>quantum?process.burstTime-quantum:process.arrivalTime;
+    // if (currentTime == 0){
+    //     currentTime = process.arrivalTime;
+    // }
+    let job = document.createElement('div')
+    console.log(currentTime);
+    console.trace();
     job.innerHTML='<h6 class="checkPoint">'+currentTime+'</h6>'
     job.className='time'
     job.style.backgroundColor=process.color;
     job.title = process.procName;
-    job.style.width=(duration)+'vh';
+    job.style.width=(6*duration)+"vw";
     job.style.animationName="grow"
     job.style.animationDuration=duration+"s"
+    // job.style.animationDelay = currentTime+"s"
     currentTime+=duration;
-    document.getElementById('ganttChart').appendChild(idle);
-    process.burstTime-=quantum;
-    wait(duration)
-    return process;
-
+     document.getElementById('ganttChart').appendChild(job);
+    // setTimeout(function () { },duration*1000)
+    
+    process.remainingTime-=duration;
+    // wait(duration)
+    return process;    
 }
 function removeFromGantt(process) {}
-function visualize() {
-    time = 0
 
-    while(queue.length!=0){
-        
-        process = removeFromQueue();
-        //IF current time is > arrival time IDLE
-        process = addToGantt(process);
-
-        if(process.burstTime !=0){
-            addToQueue(process);
+function checkProcesses() {
+    console.log("Check Process");
+    for(i=0;i<Processes.length;i++){
+        if((Processes[i].arrivalTime<=currentTime) && (!(queue.some((job)=>{job.procName == Processes[i].procName}))) ){
+            enqueue(Object.assign(Processes[i]));
+            console.log("added ***************************");
+            console.log(Processes[i]);
         }
-
     }
+    if(queue.length==0){
+        // currentTime++;
+    }
+}
+function time(algorithm) {
+    let num =  setInterval(function (){
+            if(ActiveProcesses>0){
+                algorithm();
+                currentTime++; 
+                console.log("intimer");
+                console.log(currentTime);
+            }
+        } ,1000,algorithm)
+        
+
+}
+async function visualizeRoundRobin() {
+    console.log("Visualize round Robin");
+    console.log(ActiveProcesses);
+    visualizerRunning = true;
+    
+    // while( (ActiveProcesses > 0)){
+        if(queue.length>0){
+
+            console.log("in while loop of Visualize Round Robin");   
+            let process = dequeue();
+            console.log("removed");
+            if(process.remainingTime == process.burstTime){
+                process.responseTime = process.arrivalTime;
+            }
+            
+            if(process.arrivalTime > currentTime){
+                idle(process.arrivalTime-currentTime);
+            }
+            console.log("in loop");
+            //IF current time is > arrival time IDLE
+            if(process.remainingTime<=quantum){
+                process = addToGantt(process,process.remainingTime);
+                process = Processes.find((proc)=>{proc.procName == process.procName});
+                process.completionTIme = currentTime;
+                process.remainingTime = 0;
+                ActiveProcesses--;
+
+            }
+            else if (process.remainingTime > quantum){
+                process = addToGantt(process,quantum);
+                // process.remainingTime -= quantum;
+                enqueue(process);
+            }
+            // process = Object.assign(process);
+        }
+        else{
+            console.log("queue is empty");
+            // await wait(1);
+            currentTime++;
+        }
+        // checkProcesses();
+        
+    // }
+        
+        
+    visualizerRunning = false;
 }

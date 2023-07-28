@@ -11,9 +11,16 @@
         <header class="header">
             <h3 class="logo">CSAV</h3>
             <nav class="nav">
-                <ul>
-                    <li><h4><a href="#">Round Robin Algrithm</a></h4></li>
-                </ul>
+                <select name="selectAlgo" id="selectAlgo" >
+                    <option value="select" disabled>-select-</option>
+                    <option value="RR"><h4>Round Robin </h4></option>
+                    <option value="FCFS"><h4>First Come First Serve</h4></option>
+                    <option value="SJFNP"><h4>Shortest Job Non preemptive</h4></option>
+                    <option value="SJFP"><h4>Shortest Job preemptive</h4></option>
+                    <option value="PNP"><h4>Priority Non preemptive</h4></option>
+                    <option value="PP"><h4>Priority preemptive</h4></option>
+                </select>
+                <button id="stop" style="background-color: red; color: white;">Stop</button>
             </nav>
         </header>
         <main>
@@ -53,7 +60,7 @@
                     </td>
                     <td>
                         <select name="" id="color">
-                            <option disabled value="select">-select-</option>
+                            <option value="select" disabled >-select-</option>
                             <option value="aliceblue" style="background-color:aliceblue;">aliceblue</option>
                             <option value="aqua" style="background-color:aqua;">aqua</option>
                             <option value="burlywood" style="background-color:burlywood;">burlywood</option>
@@ -81,23 +88,14 @@
                 </tr>
             </table>
 
-            <label for="Quantum Value" id="txtQuantum">Quantum Value </label> <input min="1" max="100" type="number" id="Quantum Value" value="">
+            <label for="Quantum Value" id="">Quantum Value </label> <input id="txtQuantum" min="1" max="100" type="number" id="Quantum Value" value="">
             <button id="btnVisualize">Visualize</button>
             <div class="chartContainer">
                 <div class="readyQueue" id="readyQueue">
                     <div class="past time"></div>
-                    <div class="past time"></div>
-                    <div class="past time"></div>
-                    <div class="past time"></div>
-                    <div class="past time"></div>
-                    <div class="ready time"></div>
-                    <div class="ready time"></div>
-                    <div class="ready time"></div>
-                    <div class="ready time"></div>
-                    <div class="ready time"></div>
                     <div class="ready time"></div>
                 </div>
-                <div class="ganttChart">
+                <div class="ganttChart" id="ganttChart">
                     <div class="time"><h6 class="checkPoint">0</h6></div>
                 </div>
             </div>
@@ -108,3 +106,4 @@
 </body>
 </html>
 <script src="index.js"></script>
+<script src="./stop.js"></script>
