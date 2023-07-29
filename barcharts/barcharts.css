@@ -1,0 +1,57 @@
+.chartContainer{
+    width: max-content;
+    margin-bottom: 5rem;
+    overflow: hidden;
+    height: 70vh;
+}
+.chart{
+    margin: 50px;
+    height: 50vh;
+    width: max-content;
+    display: flex;
+    align-items: end;
+    gap: 4rem;
+}
+aside.nums{
+    flex-direction: column;
+    width: max-content;
+    display: flex;
+    justify-content: center;
+    align-items: end;
+    position: relative;
+    left: -25px;
+    display: none;
+
+}
+div.bar{
+    border-radius: 5px;
+    background-color: rgb(104, 0, 0);
+    width: 50px;
+    /* display: flex; */
+    animation-duration: 1.5s;
+    animation-iteration-count: 1;
+    display: grid;
+    justify-content: center;
+    /* align-items: end; */
+    height: 0vw;
+
+}
+h4.amount{
+    color: rgb(122, 42, 42);
+    align-self: flex-start;
+    justify-self: center;
+}
+.name{
+    align-self: flex-end;
+    position: relative;
+    top: 7vh;
+}
+.chartName{
+    text-align: center;
+}
+
+@keyframes growUp {
+    from{height:  0;}
+    to{
+    }
+}

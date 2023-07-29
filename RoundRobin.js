@@ -10,7 +10,7 @@ async function visualizeRoundRobin() {
             let process = dequeue();
             console.log("removed");
             if(process.remainingTime == process.burstTime){
-                process.responseTime = process.arrivalTime;
+                process.responseTime = currentTime;
             }
             
             if(process.arrivalTime > currentTime){
@@ -52,19 +52,3 @@ async function visualizeRoundRobin() {
 }
 
 
-function calculate(Processes) {
-    console.log("calculateing");
-    console.log(Processes);
-    for(i=0;i<Processes.length;i++){
-        Processes[i].turnRoundTime = Processes[i].completionTIme-Processes[i].arrivalTime;
-        Processes[i].waitTime = Processes[i].turnRoundTime - Processes[i].burstTime;
-        tableData = document.querySelector('tr:nth-child('+(i+2)+') td:nth-child(5)')
-        tableData.innerText = Processes[i].turnRoundTime;
-        tableData = tableData.nextElementSibling;
-        tableData.innerText = Processes[i].completionTIme
-        tableData = tableData.nextElementSibling;
-        tableData.innerText = Processes[i].waitTime
-        tableData = tableData.nextElementSibling;
-        tableData.innerText = Processes[i].responseTime
-    }
-}

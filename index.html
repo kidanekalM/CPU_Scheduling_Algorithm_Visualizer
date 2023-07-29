@@ -78,7 +78,9 @@
                     <td>
                         <select name="" id="color">
                             <option value="select" disabled >-select-</option>
-                            <option value="aliceblue" style="background-color:aliceblue;">aliceblue</option>
+                            <option value="green" style="background-color:green;">green</option>
+                            <option value="yellow" style="background-color:yellow;">yellow</option>
+                            <option value="red" style="background-color:red;">red</option>
                             <option value="aqua" style="background-color:aqua;">aqua</option>
                             <option value="burlywood" style="background-color:burlywood;">burlywood</option>
                             <option value="chocolate" style="background-color:chocolate;">chocolate</option>
@@ -119,9 +121,130 @@
 
 
         </main>
+
+        <div class="More Charts">
+            
+            <div class="chartContainer">
+                <div class="chart">
+                  <aside class="nums">
+                    <h4>50</h4>
+                    <h4>40</h4>
+                    <h4>30</h4>
+                    <h4>20</h4>
+                    <h4>10</h4>
+                    <h4>00</h4>
+                  </aside>
+                  <div class="bar" id="avgRTfirstBar">
+                    <h4 class="amount"></h4>
+                    <h4 class="Algorithm">FCFS</h4>
+                  </div>
+                  <div class="bar">
+                    <h4 class="amount"></h4>
+                    <h4 class="Algorithm">SJFNP</h4>
+                  </div>
+                  <div class="bar">
+                    <h4 class="amount"></h4>
+                    <h4 class="Algorithm">SJFP</h4>
+                  </div>
+                  <div class="bar">
+                    <h4 class="amount"></h4>
+                    <h4 class="Algorithm">RR</h4>
+                  </div>
+                  <div class="bar">
+                    <h4 class="amount"></h4>
+                    <h4 class="Algorithm">PNP</h4>
+                  </div>
+                  <div class="bar">
+                    <h4 class="amount"></h4>
+                    <h4 class="Algorithm">PP</h4>
+                  </div>
+                </div>
+                <h3 class="chartName">Average Response Time</h3>
+              </div>
+
+              <div class="chartContainer">
+                <div class="chart">
+                  <aside class="nums">
+                    <h4>50</h4>
+                    <h4>40</h4>
+                    <h4>30</h4>
+                    <h4>20</h4>
+                    <h4>10</h4>
+                    <h4>00</h4>
+                  </aside>
+                  <div class="bar" id="avgWTfirstBar">
+                    <h4 class="amount"></h4>
+                    <h4 class="Algorithm">FCFS</h4>
+                  </div>
+                  <div class="bar">
+                    <h4 class="amount"></h4>
+                    <h4 class="Algorithm">SJFNP</h4>
+                  </div>
+                  <div class="bar">
+                    <h4 class="amount"></h4>
+                    <h4 class="Algorithm">SJFP</h4>
+                  </div>
+                  <div class="bar">
+                    <h4 class="amount"></h4>
+                    <h4 class="Algorithm">RR</h4>
+                  </div>
+                  <div class="bar">
+                    <h4 class="amount"></h4>
+                    <h4 class="Algorithm">PNP</h4>
+                  </div>
+                  <div class="bar">
+                    <h4 class="amount"></h4>
+                    <h4 class="Algorithm">PP</h4>
+                  </div>
+                </div>
+                <h3 class="chartName">Average Wait Time</h3>
+              </div>
+
+              <div class="chartContainer">
+                <div class="chart">
+                  <aside class="nums">
+                    <h4>50</h4>
+                    <h4>40</h4>
+                    <h4>30</h4>
+                    <h4>20</h4>
+                    <h4>10</h4>
+                    <h4>00</h4>
+                  </aside>
+                  <div class="bar" id="avgTRTfirstBar">
+                    <h4 class="amount"></h4>
+                    <h4 class="Algorithm">FCFS</h4>
+                  </div>
+                  <div class="bar">
+                    <h4 class="amount"></h4>
+                    <h4 class="Algorithm">SJFNP</h4>
+                  </div>
+                  <div class="bar">
+                    <h4 class="amount"></h4>
+                    <h4 class="Algorithm">SJFP</h4>
+                  </div>
+                  <div class="bar">
+                    <h4 class="amount"></h4>
+                    <h4 class="Algorithm">RR</h4>
+                  </div>
+                  <div class="bar">
+                    <h4 class="amount"></h4>
+                    <h4 class="Algorithm">PNP</h4>
+                  </div>
+                  <div class="bar">
+                    <h4 class="amount">50</h4>
+                    <h4 class="Algorithm">PP</h4>
+                  </div>
+                </div>
+                <h3 class="chartName">Average Turn Round Time Time</h3>
+              </div>
+
+        </div>
     </div>
 </body>
 </html>
+<script src="./calculate.js"></script>
 <script src="index.js"></script>
 <script src="./RoundRobin.js"></script>
 <script src="./stop.js"></script>
+<script src="./barcharts/barCharts.js"></script>
+<script src="./FirstComeFirstServe.js"></script>

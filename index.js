@@ -8,6 +8,7 @@ let visualizerRunning = new Object()
 visualizerRunning = false;
 let ActiveProcesses = 0;
 let timerId = 0;
+let selectedAlgo = ""
 /*
 let FCFS = new Object()
 FCFS.currentTime = 0;
@@ -156,22 +157,28 @@ document.getElementById('btnVisualize').addEventListener('click', function () {
             alert('choose an algorithm!');
         }
         else if(algo == "RR"){
-             initialize(visualizeRoundRobin);
+            selectedAlgo = algo
+            initialize(visualizeRoundRobin);
             //  visualizeRoundRobin();
         }
         else if(algo == "FCFS"){
+            selectedAlgo = algo
             initialize(visualizeFCFS);
         }
         else if(algo == "SJFNP"){
+            selectedAlgo = algo
             initialize(visualizeSJFNP);
         }
         else if(algo == "SJFP"){
+            selectedAlgo = algo
             initialize(visualizeSJFP);
         } 
         else if(algo == "PP"){
+            selectedAlgo = algo
             initialize(visualizePP);
         }
         else if(algo == "PNP"){
+            selectedAlgo = algo
             initialize(visualizePNP);
         }
         
@@ -186,6 +193,11 @@ function addToTable(process) {
 }
  async function initialize(algorithm) {
     queue=[];
+    currentTime = 0;
+    document.getElementById('ganttChart').innerHTML=""
+    clearInterval(timerId);
+    ActiveProcesses = Processes.length;
+
     for(j=0;j<Processes.length;j++){
         for(i=j;i<Processes.length;i++){
             if(Processes[j].arrivalTime>Processes[i].arrivalTime){
@@ -206,7 +218,8 @@ function addToTable(process) {
         // Object.assign(process,Processes[i]);
         console.log(process);
         
-        setTimeout(function () { 
+        setTimeout(function () {
+            process.remainingTime = process.burstTime; 
              enqueue(process);
             console.log(Processes);
             console.log(queue);
@@ -269,10 +282,6 @@ function idle(duration) {
  */
 
 function addToGantt(process,duration) {
-    // duration = process.burstTime>quantum?process.burstTime-quantum:process.arrivalTime;
-    // if (currentTime == 0){
-    //     currentTime = process.arrivalTime;
-    // }
     let job = document.createElement('div')
     console.log(currentTime);
     console.trace();
@@ -286,15 +295,17 @@ function addToGantt(process,duration) {
     // job.style.animationDelay = currentTime+"s"
     currentTime+=duration-1;
      document.getElementById('ganttChart').appendChild(job);
-    // setTimeout(function () { },duration*1000)
+    //  job.animate({width:(6*duration)+"vw"},duration+"s")    // setTimeout(function () { },duration*1000)
     process.completionTIme = currentTime+1;
     process.remainingTime-=duration;
     // wait(duration)
+    
     return process;    
 }
 function removeFromGantt(process) {}
 
 function time(algorithm) {
+    currentTime=0;
     timerObj = {
         timerID : 0
     }
@@ -312,6 +323,9 @@ function time(algorithm) {
                 console.log(timerObj.timerID);
                 console.log(unorderedProcesses);
                 calculate(unorderedProcesses);
+                drawBarChart("avgRT")
+                drawBarChart("avgTRT")
+                drawBarChart("avgWT")
             }
         } ,1000,algorithm,timerObj)
         
