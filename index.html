@@ -39,6 +39,19 @@
                         Priority
                     </th>
                     <th>
+                        Turn round time
+                    </th>
+                    <th>
+                        Comp time
+                    </th>
+                    <th>
+                        Wait time
+                    </th>
+                    <th>
+                        Response time
+                    </th>
+
+                    <th>
                         Color Code  
                     </th>
                     <th>
@@ -58,6 +71,10 @@
                     <td>
                         <input type="number" min="0" max="100" id="priorityNum">
                     </td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
                     <td>
                         <select name="" id="color">
                             <option value="select" disabled >-select-</option>
@@ -87,7 +104,7 @@
                     </th>
                 </tr>
             </table>
-
+            <button id="generate">Generate</button>
             <label for="Quantum Value" id="">Quantum Value </label> <input id="txtQuantum" min="1" max="100" type="number" id="Quantum Value" value="">
             <button id="btnVisualize">Visualize</button>
             <div class="chartContainer">
@@ -106,4 +123,5 @@
 </body>
 </html>
 <script src="index.js"></script>
+<script src="./RoundRobin.js"></script>
 <script src="./stop.js"></script>

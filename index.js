@@ -1,9 +1,5 @@
-/*******************************
- * Make it run parallely
- */
-
-
 btnAdd = document.getElementById('btnadd');
+let unorderedProcesses = [];
 let Processes = [];
 let queue = [];
 let quantum = 0;
@@ -11,6 +7,7 @@ let currentTime = 0;
 let visualizerRunning = new Object()
 visualizerRunning = false;
 let ActiveProcesses = 0;
+let timerId = 0;
 /*
 let FCFS = new Object()
 FCFS.currentTime = 0;
@@ -110,6 +107,7 @@ btnAdd.addEventListener('click',function (params) {
         console.log(color[color.selectedIndex])
         color[color.selectedIndex].disabled=true;
         Processes.push(process);
+        unorderedProcesses.push(process);
         addToTable(process);
         alert(process.procName+" Added");
         console.log(Processes);
@@ -121,7 +119,28 @@ btnAdd.addEventListener('click',function (params) {
 })
 
 // TODO EDit and Delete
-
+document.getElementById('generate').addEventListener('click',function () {
+    for(i=0;i<5;i++){
+        process = Object();
+        process.procName = "P"+i;
+        process.arrivalTime = Math.floor(Math.random()*10);
+        process.burstTime = Math.floor(Math.random()*10)+1;
+        process.color = document.getElementById('color')[i+1].value;
+        process.priority = Math.floor(Math.random()*10);
+        process.responseTime = 0;
+        process.completionTIme = 0;
+        process.turnRoundTime = 0;
+        process.waitTime = 0;
+        process.remainingTime = process.burstTime;
+        color[color.selectedIndex].disabled=true;
+        Processes.push(process);
+        unorderedProcesses.push(process);
+        addToTable(process);
+        color.selectedIndex=0;
+        ActiveProcesses++;
+    }
+    alert("5 processes added")
+  })
 document.getElementById('btnVisualize').addEventListener('click', function () {
     console.log(document.getElementById('txtQuantum'));
     quantum = document.getElementById('txtQuantum').value;
@@ -160,7 +179,7 @@ document.getElementById('btnVisualize').addEventListener('click', function () {
   })
 function addToTable(process) {
     tableRow = document.createElement('tr');
-    tableRow.innerHTML='<td>'+process.procName+'</td>'+'<td>'+process.arrivalTime+'</td>'+'<td>'+process.burstTime+'</td>'+'<td>'+process.priority+'</td>'+'<td style="background-color:'+process.color+'">'+process.color+'</td>'+'<td><button id="edit">Edit</button><button id="delete">Delete</button></td>';
+    tableRow.innerHTML='<td>'+process.procName+'</td>'+'<td>'+process.arrivalTime+'</td>'+'<td>'+process.burstTime+'</td>'+'<td>'+process.priority+'</td><td></td><td></td><td></td><td></td>'+'<td style="background-color:'+process.color+'">'+process.color+'</td>'+'<td><button id="edit">Edit</button><button id="delete">Delete</button></td>';
     console.log("last child is");
     document.getElementById('table').lastElementChild.lastElementChild.before(tableRow);
 
@@ -183,8 +202,8 @@ function addToTable(process) {
     DOMqueue.innerHTML="";
     
     for(i=0;i<Processes.length;i++){
-        let process = new Object();
-        Object.assign(process,Processes[i]);
+        let process = Processes[i];
+        // Object.assign(process,Processes[i]);
         console.log(process);
         
         setTimeout(function () { 
@@ -203,13 +222,12 @@ function addToTable(process) {
 }
 
 async function enqueue(process) {
-    // checkProcesses();
     DOMqueue = document.getElementById('readyQueue');
     queueItem = document.createElement('div');
     queueItem.className = 'ready time';
     queueItem.id = process.procName;
     queueItem.style.backgroundColor = process.color;
-    queueItem.innerHTML = '<strong>'+/*process.procName+*/'<sub> RT = '+process.remainingTime+'</sub>'+'</strong>';
+    queueItem.innerHTML = '<strong>'+process.procName+'<sub>  = '+process.remainingTime+'</sub>'+'</strong>';
     DOMqueue.appendChild(queueItem);
     queue.push(process);
     
@@ -217,13 +235,12 @@ async function enqueue(process) {
 
 }
 function dequeue() {
-    // checkProcesses();
     console.log("dequeue");
     console.log(queue);
     let domItem =document.querySelector('.ready.time'); 
     console.log(domItem);
     domItem.className="past time";
-    // domItem.style.backgroundColor="grey";
+    domItem.style.backgroundColor="grey";
     
     return queue.shift();
 }
@@ -234,7 +251,7 @@ function wait(duration) {
 }
 function idle(duration) {
     let idleJob = document.createElement('div');
-    idleJob.innerHTML='<h6 class="checkPoint">'+currentTime+'</h6>';
+    idleJob.innerHTML='<h5>IDLE</h5>'+'<h6 class="checkPoint">'+currentTime+'</h6> ';
     idleJob.className='time idle';
     idleJob.style.animationName="grow"
     idleJob.style.animationDuration=duration+"s"
@@ -259,7 +276,7 @@ function addToGantt(process,duration) {
     let job = document.createElement('div')
     console.log(currentTime);
     console.trace();
-    job.innerHTML='<h6 class="checkPoint">'+currentTime+'</h6>'
+    job.innerHTML=' <h5>'+process.procName+'</h5>'+  '<h6 class="checkPoint">'+currentTime+'</h6> '
     job.className='time'
     job.style.backgroundColor=process.color;
     job.title = process.procName;
@@ -267,85 +284,37 @@ function addToGantt(process,duration) {
     job.style.animationName="grow"
     job.style.animationDuration=duration+"s"
     // job.style.animationDelay = currentTime+"s"
-    currentTime+=duration;
+    currentTime+=duration-1;
      document.getElementById('ganttChart').appendChild(job);
     // setTimeout(function () { },duration*1000)
-    
+    process.completionTIme = currentTime+1;
     process.remainingTime-=duration;
     // wait(duration)
     return process;    
 }
 function removeFromGantt(process) {}
 
-function checkProcesses() {
-    console.log("Check Process");
-    for(i=0;i<Processes.length;i++){
-        if((Processes[i].arrivalTime<=currentTime) && (!(queue.some((job)=>{job.procName == Processes[i].procName}))) ){
-            enqueue(Object.assign(Processes[i]));
-            console.log("added ***************************");
-            console.log(Processes[i]);
-        }
-    }
-    if(queue.length==0){
-        // currentTime++;
-    }
-}
 function time(algorithm) {
-    let num =  setInterval(function (){
+    timerObj = {
+        timerID : 0
+    }
+    timerObj.timerID =  setInterval(function (){
             if(ActiveProcesses>0){
                 algorithm();
                 currentTime++; 
                 console.log("intimer");
+                console.log(ActiveProcesses);
                 console.log(currentTime);
             }
-        } ,1000,algorithm)
+            else{
+                console.log("active processes is zero");
+                clearInterval(timerObj.timerID);
+                console.log(timerObj.timerID);
+                console.log(unorderedProcesses);
+                calculate(unorderedProcesses);
+            }
+        } ,1000,algorithm,timerObj)
         
 
 }
-async function visualizeRoundRobin() {
-    console.log("Visualize round Robin");
-    console.log(ActiveProcesses);
-    visualizerRunning = true;
-    
-    // while( (ActiveProcesses > 0)){
-        if(queue.length>0){
 
-            console.log("in while loop of Visualize Round Robin");   
-            let process = dequeue();
-            console.log("removed");
-            if(process.remainingTime == process.burstTime){
-                process.responseTime = process.arrivalTime;
-            }
-            
-            if(process.arrivalTime > currentTime){
-                idle(process.arrivalTime-currentTime);
-            }
-            console.log("in loop");
-            //IF current time is > arrival time IDLE
-            if(process.remainingTime<=quantum){
-                process = addToGantt(process,process.remainingTime);
-                process = Processes.find((proc)=>{proc.procName == process.procName});
-                process.completionTIme = currentTime;
-                process.remainingTime = 0;
-                ActiveProcesses--;
-
-            }
-            else if (process.remainingTime > quantum){
-                process = addToGantt(process,quantum);
-                // process.remainingTime -= quantum;
-                enqueue(process);
-            }
-            // process = Object.assign(process);
-        }
-        else{
-            console.log("queue is empty");
-            // await wait(1);
-            currentTime++;
-        }
-        // checkProcesses();
-        
-    // }
-        
-        
-    visualizerRunning = false;
-}
