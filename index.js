@@ -9,36 +9,7 @@ visualizerRunning = false;
 let ActiveProcesses = 0;
 let timerId = 0;
 let selectedAlgo = ""
-/*
-let FCFS = new Object()
-FCFS.currentTime = 0;
-FCFS.queue = [];
-let SJFNPremptive = new Object()
-SJFNPremptive.currentTime=0;
-SJFNPremptive.queue=[];
-let SJFPremptive = new Object()
-SJFPremptive.currentTime=0;
-SJFPremptive.queue=[]
-let RoundRobin = new Object()
-RoundRobin.currentTime=0;
-RoundRobin.queue=[]
-let PriorityPremptive = new Object()
-PriorityPremptive.avgWT = 0;
-PriorityPremptive.avgTRT = 0;
-PriorityPremptive.avgCT = 0;
-PriorityPremptive.avgRT = 0;
-PriorityPremptive.currentTime=0;
-PriorityPremptive.queue=[];
-let PriorityNPremptive = new Object()
-PriorityNPremptive.avgWT = 0;
-PriorityNPremptive.avgTRT = 0;
-PriorityNPremptive.avgCT = 0;
-PriorityNPremptive.avgRT = 0;
-PriorityNPremptive.currentTime=0;
-PriorityNPremptive.queue=[];
-*/
 
-console.log( document.getElementById('color'));
 btnAdd.addEventListener('click',function (params) {
     
     procName = document.getElementById('processName');
@@ -49,7 +20,6 @@ btnAdd.addEventListener('click',function (params) {
     valid = [false,false,false,false,false];
 
     Processes.map(p=>console.log(toString(p.procName)+" "+toString(procName.value)))
-    console.log(Processes.every(p=>p.procName == procName));
     
     if((procName.value == "") ){
         alert('Process name must be non empty and unique !!');
@@ -105,7 +75,6 @@ btnAdd.addEventListener('click',function (params) {
         process.responseTime = 0;
         process.completionTIme = 0;
         process.remainingTime = process.burstTime;
-        console.log(color[color.selectedIndex])
         color[color.selectedIndex].disabled=true;
         Processes.push(process);
         unorderedProcesses.push(process);
@@ -114,8 +83,6 @@ btnAdd.addEventListener('click',function (params) {
         console.log(Processes);
         color.selectedIndex=0;
         ActiveProcesses++;
-        console.log("active == " +ActiveProcesses);
-        // initialize()   
     } 
 })
 
@@ -143,42 +110,33 @@ document.getElementById('generate').addEventListener('click',function () {
     alert("5 processes added")
   })
 document.getElementById('btnVisualize').addEventListener('click', function () {
-    console.log(document.getElementById('txtQuantum'));
     quantum = document.getElementById('txtQuantum').value;
-    console.log((quantum));
-    algo = document.getElementById('selectAlgo')[document.getElementById('selectAlgo').selectedIndex].value
+    selectedAlgo = document.getElementById('selectAlgo')[document.getElementById('selectAlgo').selectedIndex].value
     if((quantum == "") || (parseInt(quantum)<=0)){
         alert('quantum number cannot be less or equal to zero')
     }
     else{
         quantum = parseInt(quantum);
             // initialize();
-        if(algo == "select"){
+        if(selectedAlgo == "select"){
             alert('choose an algorithm!');
         }
-        else if(algo == "RR"){
-            selectedAlgo = algo
+        else if(selectedAlgo == "RR"){
             initialize(visualizeRoundRobin);
-            //  visualizeRoundRobin();
         }
-        else if(algo == "FCFS"){
-            selectedAlgo = algo
+        else if(selectedAlgo == "FCFS"){
             initialize(visualizeFCFS);
         }
-        else if(algo == "SJFNP"){
-            selectedAlgo = algo
+        else if(selectedAlgo == "SJFNP"){
             initialize(visualizeSJFNP);
         }
-        else if(algo == "SJFP"){
-            selectedAlgo = algo
+        else if(selectedAlgo == "SJFP"){
             initialize(visualizeSJFP);
         } 
-        else if(algo == "PP"){
-            selectedAlgo = algo
+        else if(selectedAlgo == "PP"){
             initialize(visualizePP);
         }
-        else if(algo == "PNP"){
-            selectedAlgo = algo
+        else if(selectedAlgo == "PNP"){
             initialize(visualizePNP);
         }
         
@@ -187,7 +145,6 @@ document.getElementById('btnVisualize').addEventListener('click', function () {
 function addToTable(process) {
     tableRow = document.createElement('tr');
     tableRow.innerHTML='<td>'+process.procName+'</td>'+'<td>'+process.arrivalTime+'</td>'+'<td>'+process.burstTime+'</td>'+'<td>'+process.priority+'</td><td></td><td></td><td></td><td></td>'+'<td style="background-color:'+process.color+'">'+process.color+'</td>'+'<td><button id="edit">Edit</button><button id="delete">Delete</button></td>';
-    console.log("last child is");
     document.getElementById('table').lastElementChild.lastElementChild.before(tableRow);
 
 }
@@ -209,36 +166,27 @@ function addToTable(process) {
     }
 
     DOMqueue = document.getElementById('readyQueue')
-    console.log("Children");
-    console.log(DOMqueue.children);
     DOMqueue.innerHTML="";
     
+    time(algorithm)
     for(i=0;i<Processes.length;i++){
         let process = Processes[i];
-        // Object.assign(process,Processes[i]);
-        console.log(process);
-        
         setTimeout(function () {
             process.remainingTime = process.burstTime; 
              enqueue(process);
-            console.log(Processes);
-            console.log(queue);
-            console.log(queue.length);
-            time(algorithm)
-            // algorithm();
-            // console.log(visualizerRunning);
             },Processes[0].arrivalTime*1000,process,algorithm,visualizerRunning,i);
             
         }
     
 
 }
-
+/**@summary adds a process to the queue  */
+/**@param process the proceess to add to queue */
 async function enqueue(process) {
     DOMqueue = document.getElementById('readyQueue');
     queueItem = document.createElement('div');
     queueItem.className = 'ready time';
-    queueItem.id = process.procName;
+    queueItem.id = process.procName+process.remainingTime;
     queueItem.style.backgroundColor = process.color;
     queueItem.innerHTML = '<strong>'+process.procName+'<sub>  = '+process.remainingTime+'</sub>'+'</strong>';
     DOMqueue.appendChild(queueItem);
@@ -247,44 +195,35 @@ async function enqueue(process) {
     return;
 
 }
-function dequeue() {
-    console.log("dequeue");
-    console.log(queue);
-    let domItem =document.querySelector('.ready.time'); 
-    console.log(domItem);
+/**@summary removes a process from the queue  */
+/**@param index the the index of the process to remove from the queue */
+function dequeue(index) {
+    let removedProcess = queue.splice(index,1)[0];
+    let domItem =document.querySelector('#'+removedProcess.procName+removedProcess.remainingTime); 
+
     domItem.className="past time";
     domItem.style.backgroundColor="grey";
     
-    return queue.shift();
+    return removedProcess;
 }
-function wait(duration) {
-    setTimeout(function() {
-            
-    },duration*1000);
-}
+/**@summary to set idle time in the gantt chart */
 function idle(duration) {
     let idleJob = document.createElement('div');
     idleJob.innerHTML='<h5>IDLE</h5>'+'<h6 class="checkPoint">'+currentTime+'</h6> ';
     idleJob.className='time idle';
     idleJob.style.animationName="grow"
     idleJob.style.animationDuration=duration+"s"
-    // idleJob.style.animationDelay = currentTime+"s"
     idleJob.style.width=(6*duration)+"vw";
-    document.getElementById('ganttChart').appendChild(idleJob);
-    // setTimeout(function () { document.getElementById('ganttChart').appendChild(idleJob); },duration*1000)
-    
     currentTime += duration;
-    // wait(duration)
-    
+    document.getElementById('ganttChart').appendChild(idleJob);
 }
 /***
- * Will add the process to gantt chart and subtract the duration from the remaining time 
+ *  @summary Will add the process to gantt chart and subtract the duration from the remaining time 
+ *  
  */
 
 function addToGantt(process,duration) {
     let job = document.createElement('div')
-    console.log(currentTime);
-    console.trace();
     job.innerHTML=' <h5>'+process.procName+'</h5>'+  '<h6 class="checkPoint">'+currentTime+'</h6> '
     job.className='time'
     job.style.backgroundColor=process.color;
@@ -292,13 +231,10 @@ function addToGantt(process,duration) {
     job.style.width=(6*duration)+"vw";
     job.style.animationName="grow"
     job.style.animationDuration=duration+"s"
-    // job.style.animationDelay = currentTime+"s"
     currentTime+=duration-1;
      document.getElementById('ganttChart').appendChild(job);
-    //  job.animate({width:(6*duration)+"vw"},duration+"s")    // setTimeout(function () { },duration*1000)
     process.completionTIme = currentTime+1;
     process.remainingTime-=duration;
-    // wait(duration)
     
     return process;    
 }
@@ -313,15 +249,9 @@ function time(algorithm) {
             if(ActiveProcesses>0){
                 algorithm();
                 currentTime++; 
-                console.log("intimer");
-                console.log(ActiveProcesses);
-                console.log(currentTime);
             }
             else{
-                console.log("active processes is zero");
                 clearInterval(timerObj.timerID);
-                console.log(timerObj.timerID);
-                console.log(unorderedProcesses);
                 calculate(unorderedProcesses);
                 drawBarChart("avgRT")
                 drawBarChart("avgTRT")

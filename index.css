@@ -3,7 +3,7 @@
     box-sizing: border-box;
     margin: 0;
     border: 0;
-
+    font-family: sans-serif;
 }
 .wrapper{
     height: max-content;
@@ -43,21 +43,22 @@ tr{
 
 }
 table th{
-    min-width: 4vw;
-    font-size: 1.5rem;
+    font-size: 1rem;
+    background-color: cadetblue;
 }
 table tr{
     background-color: rgb(241, 241, 241);
 }
 
 table td{
-    font-size: 1.5rem;
+    font-size: 1rem;
     padding: 0 1.2rem;
+    text-align: center;
 }
  input{
     font-size: 1.2rem;
-    width: 6rem;
-    box-shadow: 0px 0px 1px 1px grey;
+    max-width: 6rem;
+    box-shadow: 0px 0px 1px 1px rgb(180, 180, 180);
 }
 tr:nth-child(even){
     background-color: rgb(177, 177, 177);
@@ -116,7 +117,7 @@ button{
 }
 h6.checkPoint{
     color: black;
-    font-size: 1.5rem;
+    font-size: 1rem;
     position: relative;
     top: 5vh;
     left: -2vh;
@@ -139,8 +140,8 @@ button#edit,button#delete{
 }
 
 @media (max-width:800px) {
-    table th{
-        font-size: 3vw;
+    table th,td{
+        font-size: 2vw;
     }
     table input{
         font-size: 1rem;

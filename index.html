@@ -9,7 +9,7 @@
 <body>
     <div class="wrapper">
         <header class="header">
-            <h3 class="logo">CSAV</h3>
+            <h3 class="logo">CSASV</h3>
             <nav class="nav">
                 <select name="selectAlgo" id="selectAlgo" >
                     <option value="select" disabled>-select-</option>
@@ -38,16 +38,16 @@
                         Priority
                     </th>
                     <th>
-                        Turn round time
+                        TRT
                     </th>
                     <th>
-                        Comp time
+                        CT
                     </th>
                     <th>
-                        Wait time
+                        WT
                     </th>
                     <th>
-                        Response time
+                        RT
                     </th>
 
                     <th>
@@ -100,9 +100,9 @@
                             <option value="turquoise" style="background-color:turquoise;">turquoise</option>
                         </select>
                     </td>
-                    <th>
+                    <td>
                         <button class="add" id="btnadd">Add</button>
-                    </th>
+                    </td>
                 </tr>
             </table>
             <button id="generate">Generate</button>
@@ -243,7 +243,7 @@
 </html>
 <script src="./calculate.js"></script>
 <script src="index.js"></script>
-<script src="./RoundRobin.js"></script>
+<script src="./algorithm/RoundRobin.js"></script>
 <script src="./stop.js"></script>
 <script src="./barcharts/barCharts.js"></script>
-<script src="./visualizeFCFS.js"></script>
+<script src="./algorithm/visualizeFCFS.js"></script>
