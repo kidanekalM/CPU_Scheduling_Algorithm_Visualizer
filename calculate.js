@@ -47,10 +47,10 @@ function calcAvg(processes) {
         avgs.avgWT += processes[c].waitTime
     }
     console.log("c == "+c);
-    avgs.avgCT = avgs.avgCT / c
-    avgs.avgRT /= c
-    avgs.avgTRT /= c
-    avgs.avgWT /= c
+    avgs.avgCT =Math.round( avgs.avgCT / c)
+    avgs.avgRT =Math.round(avgs.avgRT/ c)
+    avgs.avgTRT =Math.round(avgs.avgTRT/c) 
+    avgs.avgWT = Math.round(avgs.avgWT/c)
 
     algorithms[selectedAlgo] = avgs;
     console.log("Algorithms asrew asr323546789");
