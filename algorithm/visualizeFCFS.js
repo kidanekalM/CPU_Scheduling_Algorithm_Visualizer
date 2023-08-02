@@ -19,6 +19,7 @@ function visualizeFCFS() {
         }
         else{
             idle(1);
+            currentTime+=1;
             console.log("queue is empty");
         }
     checkArrivingProcess();
