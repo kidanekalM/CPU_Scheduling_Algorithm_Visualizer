@@ -105,10 +105,25 @@
                     </td>
                 </tr>
             </table>
-            <button id="generate">Generate</button>
-            <label for="Quantum Value" id="">Quantum Value </label> <input id="txtQuantum" min="1" max="100" type="number" id="Quantum Value" value="">
-            <button id="btnVisualize">Visualize</button>
-            <div class="chartContainer">
+            <div class="moreOpt">
+              
+            <div class="options">
+              <label for="type">Fill table</label>
+              <select name="type" id="selectType">
+                <option value="tested1">tested1</option>
+                <option value="tested2">tested2</option>
+                <option value="tested3">tested3</option>
+                <option value="random">random</option>
+                </select>
+                <button id="generate">Generate</button>  
+              </div>
+              <div class="options">
+                <label for="Quantum Value" id="">Quantum Value </label> <input id="txtQuantum" min="1" max="100" type="number" id="Quantum Value" value="">
+                <button id="btnVisualize">Visualize</button>
+              </div>
+  
+            </div>
+              <div class="chartContainer">
                 <div class="readyQueue" id="readyQueue">
                     <div class="past time"></div>
                     <div class="ready time"></div>
@@ -237,13 +252,19 @@
                 <h3 class="chartName">Average Turn Round Time Time</h3>
               </div>
 
+              <a href="./algorithm/Docs.html"><h4>Read the Docs</h4></a>
         </div>
     </div>
 </body>
 </html>
 <script src="./calculate.js"></script>
+<script src="./procList.js"></script>
 <script src="index.js"></script>
 <script src="./algorithm/RoundRobin.js"></script>
 <script src="./stop.js"></script>
 <script src="./barcharts/barCharts.js"></script>
 <script src="./algorithm/visualizeFCFS.js"></script>
+<script src="./algorithm/visualizePNP.js"></script>
+<script src="./algorithm/visualizePP.js"></script>
+<script src="./algorithm/visualizeSJFNP.js"></script>
+<script src="./algorithm/visualizeSJFP.js"></script>

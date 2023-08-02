@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CSAV Docs</title>
+</head>
+<body>
+    
+</body>
+</html>
+<h2> <code>queue[] enqueue(process) dequeue(index) addToGantt(process) checkArrivingProcess()</code> </h2>
+<hr>
+<p><strong>queue</strong> is the array that holds the readyQueue you can iterate through it to find the shortest job or the most priority. 
+but do not update it directly instead use <code>enqueue(process)</code> and <code>dequeue(index)</code> functions</p> 
+ <p><strong>enqueue</strong> is a function that adds an item to queue array as well as the DOM takes a process as a parameter </p>
+ <p> <strong>dequeue</strong> is a function that removes an item specified by an index from 0 to queue.length returns a process that was removed from the queue</p>
+ <p> <strong>addToGantt</strong> will add a process to gantt chart for specified amount of duration and subtract that duration from the remainig time of the specific process and returns it.</p>
+ <p><strong>checkArrivingProcess()</strong> function checks processes that have similar arrival time as the <code>CurrentTime</code> variable : must be called at the end of each function</p>
+ <p> <strong>time</strong> function will call the algorithms function every second so as to prevent loop which might cause the browser to run out of memory. <code>time(algorithm)</code> will not be called directly.</p>
+ 
+ <hr>
+<h3>Basic Expected Structure </h3>
+<p>Do only one iteration and the function will be called multiple times depending on the <code>ActiveProcesses</code> variable</p>
+
+<h4>if the queue is not empty</h4>
+<p>remove from queue add to gantt and add to queue</p> 
+<p>decrement ActiveProcesses when a process finishes executing can be checked by <code>remainigTime</code> property of a process </p>
+<p>set CompletionTime : <code>CompletionTime </code> is a property of every process and it is initialized to 0 set it to the CurrentTime after its <code>remainigTime</code> equals 0</p>
+<p> set Current Time: increment by the amount of time the cpu was idle or the process was executed in cpu aka <code>duration</code> variable that was sent to gantt</p>
+ <p>set responseTime: subtract the <code>arrivalTime</code> from the <code>serviceTime</code> when <code>remainigTime</code> is equal to <code>burstTime</code> </p>
+ <h4>if the queue is empty</h4>
+<p> call <code>idle(duration)</code>  for specified time usually 1</p> 

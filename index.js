@@ -1,3 +1,4 @@
+
 btnAdd = document.getElementById('btnadd');
 let unorderedProcesses = [];
 let Processes = [];
@@ -19,7 +20,7 @@ btnAdd.addEventListener('click',function (params) {
     color = document.getElementById('color');
     valid = [false,false,false,false,false];
 
-    Processes.map(p=>console.log(toString(p.procName)+" "+toString(procName.value)))
+    // Processes.map(p=>console.log(toString(p.procName)+" "+toString(procName.value)))
     
     if((procName.value == "") ){
         alert('Process name must be non empty and unique !!');
@@ -74,6 +75,7 @@ btnAdd.addEventListener('click',function (params) {
         process.priority = parseInt(priority.value);
         process.responseTime = 0;
         process.completionTIme = 0;
+        process.isNew = true;
         process.remainingTime = process.burstTime;
         color[color.selectedIndex].disabled=true;
         Processes.push(process);
@@ -85,30 +87,46 @@ btnAdd.addEventListener('click',function (params) {
         ActiveProcesses++;
     } 
 })
-
 // TODO EDit and Delete
+let procsList = procList
 document.getElementById('generate').addEventListener('click',function () {
-    for(i=0;i<5;i++){
-        process = Object();
-        process.procName = "P"+i;
-        process.arrivalTime = Math.floor(Math.random()*10);
-        process.burstTime = Math.floor(Math.random()*10)+1;
-        process.color = document.getElementById('color')[i+1].value;
-        process.priority = Math.floor(Math.random()*10);
-        process.responseTime = 0;
-        process.completionTIme = 0;
-        process.turnRoundTime = 0;
-        process.waitTime = 0;
-        process.remainingTime = process.burstTime;
-        color[color.selectedIndex].disabled=true;
-        Processes.push(process);
-        unorderedProcesses.push(process);
-        addToTable(process);
-        color.selectedIndex=0;
-        ActiveProcesses++;
+    console.log(procsList);
+    ChoosenType = document.getElementById('selectType')[document.getElementById('selectType').selectedIndex].value
+    console.log(ChoosenType);
+    if(ChoosenType != "random"){
+        newProcs = procsList[ChoosenType]
+        for(i=0;i<newProcs.length;i++){
+            Processes.push(newProcs[i])
+            unorderedProcesses.push(newProcs[i]);
+            addToTable(newProcs[i]);
+            ActiveProcesses++;
+        }
     }
-    alert("5 processes added")
-  })
+    else{
+        
+        for(i=0;i<5;i++){
+            let process = Object();
+            process.procName = "P"+i;
+            process.arrivalTime = Math.floor(Math.random()*10);
+            process.burstTime = Math.floor(Math.random()*10)+1;
+            process.color = document.getElementById('color')[i+1].value;
+            process.priority = Math.floor(Math.random()*10);
+            process.responseTime = 0;
+            process.completionTIme = 0;
+            process.turnRoundTime = 0;
+            process.waitTime = 0;
+            process.remainingTime = process.burstTime;
+            process.isNew=true;
+            color[color.selectedIndex].disabled=true;
+            Processes.push(process);
+            unorderedProcesses.push(process);
+            addToTable(process);
+            ActiveProcesses++;
+            color.selectedIndex=0;
+        }/**/
+        alert("5 processes added")
+    }
+})
 document.getElementById('btnVisualize').addEventListener('click', function () {
     quantum = document.getElementById('txtQuantum').value;
     selectedAlgo = document.getElementById('selectAlgo')[document.getElementById('selectAlgo').selectedIndex].value
@@ -164,34 +182,46 @@ function addToTable(process) {
             }        
         }
     }
-
+    for(i=0;i<Processes.length;i++){
+        Processes[i].isNew = true;
+        Processes[i].remainingTime = Processes[i].burstTime;
+    }
     DOMqueue = document.getElementById('readyQueue')
     DOMqueue.innerHTML="";
     
     time(algorithm)
-    for(i=0;i<Processes.length;i++){
-        let process = Processes[i];
-        setTimeout(function () {
-            process.remainingTime = process.burstTime; 
-             enqueue(process);
-            },Processes[0].arrivalTime*1000,process,algorithm,visualizerRunning,i);
-            
-        }
-    
 
 }
-/**@summary adds a process to the queue  */
-/**@param process the proceess to add to queue */
-async function enqueue(process) {
-    DOMqueue = document.getElementById('readyQueue');
-    queueItem = document.createElement('div');
-    queueItem.className = 'ready time';
-    queueItem.id = process.procName+process.remainingTime;
-    queueItem.style.backgroundColor = process.color;
-    queueItem.innerHTML = '<strong>'+process.procName+'<sub>  = '+process.remainingTime+'</sub>'+'</strong>';
-    DOMqueue.appendChild(queueItem);
-    queue.push(process);
-    
+
+function checkArrivingProcess() {
+    for(i=0;i<Processes.length;i++){
+        if((Processes[i].arrivalTime<=currentTime)&&(Processes[i].isNew)){
+            Processes[i].isNew = false;
+            console.log(Processes[i].procName+"is in queue");
+            process = Processes[i];
+            DOMqueue = document.getElementById('readyQueue');
+            queueItem = document.createElement('div');
+            queueItem.className = 'ready time';
+            queueItem.id = process.procName+process.remainingTime;
+            queueItem.style.backgroundColor = process.color;
+            queueItem.innerHTML = '<strong>'+process.procName+'<sub>  = '+process.remainingTime+'</sub>'+'</strong>';
+            DOMqueue.appendChild(queueItem);
+            queue.push(process);
+        }
+    }
+}
+/**@summary adds a process to the queue  @param process the proceess to add to queue */
+async function enqueue(process,duration) {
+    setTimeout(() => {
+        DOMqueue = document.getElementById('readyQueue');
+        queueItem = document.createElement('div');
+        queueItem.className = 'ready time';
+        queueItem.id = process.procName+process.remainingTime;
+        queueItem.style.backgroundColor = process.color;
+        queueItem.innerHTML = '<strong>'+process.procName+'<sub>  = '+process.remainingTime+'</sub>'+'</strong>';
+        DOMqueue.appendChild(queueItem);
+        queue.push(process);
+    }, duration*1000);
     return;
 
 }
@@ -214,14 +244,9 @@ function idle(duration) {
     idleJob.style.animationName="grow"
     idleJob.style.animationDuration=duration+"s"
     idleJob.style.width=(6*duration)+"vw";
-    currentTime += duration;
     document.getElementById('ganttChart').appendChild(idleJob);
 }
-/***
- *  @summary Will add the process to gantt chart and subtract the duration from the remaining time 
- *  
- */
-
+/**@summary Will add the process to gantt chart and subtract the duration from the remaining time    */
 function addToGantt(process,duration) {
     let job = document.createElement('div')
     job.innerHTML=' <h5>'+process.procName+'</h5>'+  '<h6 class="checkPoint">'+currentTime+'</h6> '
@@ -231,12 +256,9 @@ function addToGantt(process,duration) {
     job.style.width=(6*duration)+"vw";
     job.style.animationName="grow"
     job.style.animationDuration=duration+"s"
-    currentTime+=duration-1;
-     document.getElementById('ganttChart').appendChild(job);
-    process.completionTIme = currentTime+1;
+    document.getElementById('ganttChart').appendChild(job);
     process.remainingTime-=duration;
-    
-    return process;    
+    return  process;    
 }
 function removeFromGantt(process) {}
 
@@ -245,10 +267,10 @@ function time(algorithm) {
     timerObj = {
         timerID : 0
     }
+    checkArrivingProcess();
     timerObj.timerID =  setInterval(function (){
-            if(ActiveProcesses>0){
-                algorithm();
-                currentTime++; 
+        if(ActiveProcesses>0){
+            algorithm();
             }
             else{
                 clearInterval(timerObj.timerID);

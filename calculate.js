@@ -26,7 +26,7 @@ function calculate(Processes) {
         tableData = tableData.nextElementSibling;
         tableData.innerText = Processes[i].waitTime
         tableData = tableData.nextElementSibling;
-        tableData.innerText = Processes[i].responseTime
+        tableData.innerText = Processes[i].responseTime;
     }
     calcAvg(Processes);
 }
