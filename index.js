@@ -88,6 +88,42 @@ btnAdd.addEventListener('click',function (params) {
     } 
 })
 // TODO EDit and Delete
+function deleteClick() {
+    let tr = this.parentElement.parentElement;
+    Processes.splice(Processes.indexOf(Processes.find(p=> p.procName === tr.firstElementChild.innerText)),1);
+    tr.parentElement.removeChild(tr);
+}
+function editClick (btnEdit) {
+        let tr = this.parentElement.parentElement
+        for(i=1;i<4;i++){
+            temp = tr.children[i].innerText;
+            tr.children[i].innerText = ""
+            tr.children[i].innerHTML = "<input type='number' value="+temp+"></input>"
+            
+        }
+        tr.children[9].innerHTML="<button id='save'>save</button>"
+        tr.children[9].firstElementChild.addEventListener('click',saveEdit);
+    function saveEdit() {
+        let procName = this.parentElement.parentElement.firstElementChild.innerText;
+        let tr = this.parentElement.parentElement;
+        let proc =Processes.find(proc=>proc.procName===procName); 
+        proc.arrivalTime = parseInt(tr.firstElementChild.nextElementSibling.firstElementChild.value);
+        tr.firstElementChild.nextElementSibling.innerHTML = ""
+        tr.firstElementChild.nextElementSibling.innerText = proc.arrivalTime
+        
+        proc.burstTime = parseInt(tr.children[2].firstElementChild.value);
+        tr.children[2].innerHTML = ""
+        tr.children[2].innerText = proc.burstTime;
+        
+        proc.priority = parseInt(tr.children[3].firstElementChild.value);
+        tr.children[3].innerHTML = ""
+        tr.children[3].innerText = proc.priority;
+        tr.children[9].innerHTML="<button id='edit'>Edit</button><button id='delete'>Delete</button>"
+    }
+            
+    }
+
+
 let procsList = procList
 document.getElementById('generate').addEventListener('click',function () {
     console.log(procsList);
@@ -164,7 +200,8 @@ function addToTable(process) {
     tableRow = document.createElement('tr');
     tableRow.innerHTML='<td>'+process.procName+'</td>'+'<td>'+process.arrivalTime+'</td>'+'<td>'+process.burstTime+'</td>'+'<td>'+process.priority+'</td><td></td><td></td><td></td><td></td>'+'<td style="background-color:'+process.color+'">'+process.color+'</td>'+'<td><button id="edit">Edit</button><button id="delete">Delete</button></td>';
     document.getElementById('table').lastElementChild.lastElementChild.before(tableRow);
-
+    tableRow.children[9].firstElementChild.addEventListener('click',editClick);
+    tableRow.children[9].lastElementChild.addEventListener('click',deleteClick);
 }
  async function initialize(algorithm) {
     queue=[];
