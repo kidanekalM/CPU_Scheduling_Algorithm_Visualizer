@@ -14,8 +14,6 @@ let algorithms = {
 }
 
 function calculate(Processes) {
-    console.log("calculateing");
-    console.log(Processes);
     for(i=0;i<Processes.length;i++){
         Processes[i].turnRoundTime = Processes[i].completionTIme-Processes[i].arrivalTime;
         Processes[i].waitTime = Processes[i].turnRoundTime - Processes[i].burstTime;
@@ -37,10 +35,8 @@ function calcAvg(processes) {
     avgs.avgRT = 0;
     avgs.avgTRT = 0;
     avgs.avgWT = 0;
-    console.log(avgs);
     let c = 0;
     for(c=0;c<processes.length;c++){
-        console.log(avgs.avgCT);
         avgs.avgCT += processes[c].completionTIme
         avgs.avgRT += processes[c].responseTime
         avgs.avgTRT += processes[c].turnRoundTime
@@ -53,7 +49,5 @@ function calcAvg(processes) {
     avgs.avgWT = Math.round(avgs.avgWT/c)
 
     algorithms[selectedAlgo] = avgs;
-    console.log("Algorithms asrew asr323546789");
-    console.log(algorithms);
 
 }

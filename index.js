@@ -1,5 +1,3 @@
-
-btnAdd = document.getElementById('btnadd');
 let unorderedProcesses = [];
 let Processes = [];
 let queue = [];
@@ -10,6 +8,7 @@ visualizerRunning = false;
 let ActiveProcesses = 0;
 let timerId = 0;
 let selectedAlgo = ""
+btnAdd = document.getElementById('btnadd');
 
 btnAdd.addEventListener('click',function (params) {
     
@@ -194,7 +193,7 @@ document.getElementById('btnVisualize').addEventListener('click', function () {
   })
 function addToTable(process) {
     tableRow = document.createElement('tr');
-    tableRow.innerHTML='<td>'+process.procName+'</td>'+'<td>'+process.arrivalTime+'</td>'+'<td>'+process.burstTime+'</td>'+'<td>'+process.priority+'</td><td></td><td></td><td></td><td></td>'+'<td style="background-color:'+process.color+'">'+process.color+'</td>'+'<td><button id="edit">Edit</button><button id="delete">Delete</button></td>';
+    tableRow.innerHTML='<td>'+process.procName+'</td>'+'<td>'+process.arrivalTime+'</td>'+'<td>'+process.burstTime+'</td>'+'<td>'+process.priority+'</td><td></td><td></td><td></td><td></td>'+'<td > <div class="colorCodeDisplayer" style="background-color:'+process.color+'"></div>'+process.color+'</td>'+'<td><button id="edit">Edit</button><button id="delete">Delete</button></td>';
     document.getElementById('table').lastElementChild.lastElementChild.before(tableRow);
     tableRow.children[9].firstElementChild.addEventListener('click',editClick);
     tableRow.children[9].lastElementChild.addEventListener('click',deleteClick);

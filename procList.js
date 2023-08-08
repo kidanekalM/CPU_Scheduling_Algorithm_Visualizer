@@ -258,7 +258,7 @@ let procList = {
             procName : "p7",
             arrivalTime : 15,
             burstTime : 8,
-            color : "golderod",
+            color : "goldenrod",
             priority:9,
             responseTime:0,
             completionTIme:0,
