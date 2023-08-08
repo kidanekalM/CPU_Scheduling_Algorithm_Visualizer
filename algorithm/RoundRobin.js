@@ -1,5 +1,5 @@
 /**@summary algorithm to simulate RR will only iterate once and will require multiple calls usning Activeprocesses as a var*/
-async function visualizeRoundRobin() {
+ function visualizeRoundRobin() {
   if (queue.length > 0) {
     let process = dequeue(0);
 

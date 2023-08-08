@@ -38,6 +38,8 @@ div.bar{
 }
 h4.amount{
     color: rgb(122, 42, 42);
+    top: -1rem;
+    position: relative;
     align-self: flex-start;
     justify-self: center;
 }
@@ -47,6 +49,7 @@ h4.amount{
     top: 7vh;
 }
 .chartName{
+    margin-top: 1vh;
     text-align: center;
 }
 
