@@ -1,10 +1,12 @@
 function visualizePNP() {
     if (queue.length > 0) {
-        let process = queue[queue.length]
-        let index = 0
-        for(i=queue.length;i>queue.length;i--){
+        let process = queue[0]
+        let index = 0;
+        for(i=0;i<queue.length;i++){
             if(process.priority>queue[i].priority){
                 index = i
+                console.log("index");
+                console.log(index);
             }
         }
         process = dequeue(index);
