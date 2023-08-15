@@ -3,7 +3,7 @@ function visualizePP() {
         let process = queue[0]
         let index = 0
         for(i=0;i<queue.length;i++){
-            if(process.priority<queue[i].priority){
+            if(process.priority>queue[i].priority){
                 index = i
             }
         }

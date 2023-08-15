@@ -1,8 +1,8 @@
 function visualizeSJFNP(){
     if (queue.length > 0) {
-        let process = queue[queue.length-1];
-        index = queue.length-1;
-        for(i=queue.length-1;i>=0;i--){
+        let process = queue[0];
+        index = 0;
+        for(i=0;i<queue.length;i++){
             if(process.remainingTime>queue[i].remainingTime){
                 index = i;
             }
